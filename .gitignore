@@ -9,10 +9,9 @@ upgrade/
 test-*
 db.sqlite3
 etc/*
-dmis_extract/static/*
+dmis_extract/static/assets/*
 # C extensions
 *.so
-getresults_receive/.DS_Store
 # Distribution / packaging
 .Python
 env/
