@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block main %}
+<div class="container" align="center">
+      <div class="page-header">
+        <h1>BHHRL</h1>
+        <span id="protocol-title"></span>
+      </div> <!-- div "page-header" -->
+
+<div class="row">
+  <div class="col-sm-4">
+  </div>
+ 
+  <div class="col-sm-4">
+
+    {% crispy protocol_form protocol_form.helper %}
+
+    <ul id="pill-home" class="nav nav-pills nav-stacked" style="display:None">
+      <li class="active"><a href="#" onclick="return home();"><span id="pill-protocol"></span></a></li>
+      <li><a href="#" onclick="return receivedHome();">Received</a></li>
+      <li><a href="#" onclick="return resultedHome();">Resulted</a></li>
+      <li><a href="#" onclick="return storedHome();">Stored</a></li>
+    </ul>
+
+    
+    <ul id="pill-received" class="nav nav-pills nav-stacked" style="display:None">
+      <li class="active"><a href="#" onclick="return protocolHome();">Received</a></li>
+      <li id="pill-received-most-recent"><a href="#">Most recent</a></li>
+      <li id="pill-received-pending"><a href="#">Pending results</a></li>
+      <li id="pill-received-label"></li>
+    </ul>
+
+    <ul id="pill-resulted" class="nav nav-pills nav-stacked" style="display:None">
+      <li class="active"><a href="#" onclick="return protocolHome();">Resulted</a></li>
+      <li><a href="#">Most recent</a></li>
+    </ul>
+
+    <ul id="pill-stored" class="nav nav-pills nav-stacked" style="display:None">
+      <li class="active"><a href="#" onclick="return protocolHome();">{{ protocol }} Stored</a></li>
+      <li><a href="#">Most recent</a></li>
+    </ul>
+
+  </div>
+  <div class="col-sm-4">
+  </div>
+
+</div> <!-- div row -->
+
+<div class="alert alert-warning" id="alert-fetching" style="display:none">
+  Fetching your data. Please wait ...
+</div>
+
+
+<div id="div-data-table" style="display:none">
+<div class="table-responsive">
+  <table id="data-table" class="table table-striped table-condensed active">
+  <thead></thead>
+  <tbody></tbody>
+  </table>
+</div>
+<button id="btn-data-table-previous" role="button" class="btn btn-primary">Previous</button>
+<button id="btn-data-table-done" role="button" class="btn btn-primary">Done</button>
+<button id="btn-data-table-next" role="button" class="btn btn-primary">Next</button>
+</div> <!-- div data-table -->
+
+</div> <!-- div container -->
+
+<script>
+$(document).ready(function() {
+    $("#pill-received-label").hide();    
+    $("#btn-data-table-done").click( function(e) { resetDataTable(e); });
+    $("#pill-received-most-recent").click(function(e){ mostRecent(e, "{% url 'home' %}", 1); });
+    $('#id-protocol-form').ajaxForm({
+        success: function(data) { 
+              if (data.protocol != null) {
+                  $("#id-protocol-form").hide();
+                  $("#txt-protocol").text(data.protocol);
+                  $("#pill-protocol").text(data.protocol);
+                  $("#pill-home").show();
+                  $("#protocol-title").text(data.protocol_title);
+              } else {
+                  
+              }
+            },
+    });
+});
+
+function resetDataTable(e) {
+    $("#data-table thead").html("");
+    $("#data-table tbody").html("");
+    $("#div-data-table").toggle();
+    $("#pill-received-label").hide();
+    $("#pill-received-most-recent").removeClass('disabled');
+    $("#pill-received-most-recent").show();
+    $("#pill-received-pending").show();
+    $("#pill-received-label").hide();
+    return true;
+}
+
+function mostRecent(e, url, page) {
+    $("#pill-received-pending").hide();
+    $("#pill-received-most-recent").hide();
+    $("#pill-received-label").html("<a href=\"#\">Most Recent</a>");
+    $("#pill-received-label").show()
+    $('#alert-fetching').show();    
+    var protocol=$("#pill-protocol").text();
+    $.ajax({
+        type:'GET',
+        url:url,
+        data:{
+            action:"received-most-recent",
+            protocol: $("#pill-protocol").text(),
+            page: page,
+        },
+        success:function(json){
+            $('#alert-fetching').hide();
+            $("#data-table thead").html(json.thead);
+            $("#data-table tbody").html(json.tbody);
+            $("#div-data-table").toggle();
+        }
+    });
+    return true;
+}
+
+</script>
+{% endblock main %}

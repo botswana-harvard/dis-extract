@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block body %}
+<div class = "container">
+  <div class="row">
+    <div class="col-md-6">
+      <h1>{{ project_title }} Login</h1>
+      <hr/>
+      <div class="well">
+		{% if messages %}
+		<ul class="messages">
+		    {% for message in messages %}
+		    	<li class="list-group-item-danger"><strong>{{ message }}</strong></li>
+		    {% endfor %}
+		</ul>
+		{% endif %}
+		{% csrf_token %}
+        {% crispy form %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock body %}

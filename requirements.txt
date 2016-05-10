@@ -1,0 +1,17 @@
+Django
+pymssql
+Unipath
+pandas
+sqlalchemy
+numexpr
+pytz
+ipython
+python-dateutil
+GitPython
+django_extensions==1.6.1
+pycrypto
+six
+psycopg2
+django-simple-history
+django-crispy-forms
+django-braces

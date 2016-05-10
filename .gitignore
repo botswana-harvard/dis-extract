@@ -9,7 +9,7 @@ upgrade/
 test-*
 db.sqlite3
 etc/*
-microbiome/apps/*/migrations/
+dmis_extract/static/*
 # C extensions
 *.so
 getresults_receive/.DS_Store
