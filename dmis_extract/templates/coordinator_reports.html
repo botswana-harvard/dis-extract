@@ -1,0 +1,31 @@
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+    <div id="div-dmis-coordinator-reports-home" style="display:None">
+        {% crispy protocol_form protocol_form.helper %}
+
+        <ul id="pill-home" class="nav nav-pills nav-stacked" style="display:None">
+          <li class="active"><a href="#" onclick="return home();"><span id="pill-protocol"></span></a></li>
+          <li><a href="#" onclick="return receivedHome();">Received</a></li>
+          <li><a href="#" onclick="return resultedHome();">Resulted</a></li>
+          <li><a href="#" onclick="return storedHome();">Stored</a></li>
+        </ul>
+    
+        
+        <ul id="pill-received" class="nav nav-pills nav-stacked" style="display:None">
+          <li class="active"><a href="#" onclick="return protocolHome();">Received</a></li>
+          <li id="pill-received-most-recent"><a href="#">Most recent</a></li>
+          <li id="pill-received-pending"><a href="#">Pending results</a></li>
+          <li id="pill-received-label"></li>
+        </ul>
+    
+        <ul id="pill-resulted" class="nav nav-pills nav-stacked" style="display:None">
+          <li class="active"><a href="#" onclick="return protocolHome();">Resulted</a></li>
+          <li><a href="#">Most recent</a></li>
+        </ul>
+    
+        <ul id="pill-stored" class="nav nav-pills nav-stacked" style="display:None">
+          <li class="active"><a href="#" onclick="return protocolHome();">{{ protocol }} Stored</a></li>
+          <li><a href="#">Most recent</a></li>
+        </ul>
+  </div>  <!-- "div-coordinator-reports-home" -->

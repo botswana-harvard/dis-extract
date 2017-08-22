@@ -1,0 +1,18 @@
+{% load crispy_forms_tags %}
+
+
+    <div id="div-dmis-lab-reports-home" style="display:None">
+        <ul class="nav nav-pills nav-stacked">
+          <li class="active"><a href="#" onclick="return home();">Home</a></li>
+          <li><a href="#" onclick="return labReportsBilling();">Billing Report</a></li>
+        </ul>
+    </div>  <!-- "div-lab-reports" -->
+  
+    <div id="div-dmis-lab-reports-billing" style="display:None;" align="left">
+        <div class="panel panel-default">
+            <div class="panel-heading">Billing Report</div>
+            <div class="panel-body">
+                {% crispy billing_report_form billing_report_form.helper %}
+            </div>
+        </div>
+    </div>  <!-- "div-lab-reports-billing" -->
