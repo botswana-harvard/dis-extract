@@ -1,13 +1,11 @@
 from datetime import date
-
+from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.urls import reverse
 from django.utils.decorators import method_decorator
-from dmis_extract.forms import BillingReportForm
 from django.views.generic.edit import FormView
-from django.core.urlresolvers import reverse
-
-from dateutil.relativedelta import relativedelta
+from dmis_extract.forms import BillingReportForm
 
 
 class LabReportsView(FormView):

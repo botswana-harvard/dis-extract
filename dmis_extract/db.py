@@ -2,8 +2,8 @@ import pymssql
 import pandas as pd
 
 from django.core.management.color import color_style
+from edc_pdutils import DfHandler
 from sqlalchemy import create_engine
-from edc_pdutils import DfPrepper
 
 from .private_settings import Lis as LisCredentials
 
@@ -12,7 +12,7 @@ style = color_style()
 
 class Db(object):
 
-    df_prepper_cls = DfPrepper
+    df_handler_cls = DfHandler
 
     def __init__(self, database=None):
         self.database = database
@@ -30,6 +30,6 @@ class Db(object):
         if force_lower_columns:
             columns = {col: col.lower() for col in list(df.columns)}
             df.rename(columns=columns, inplace=True)
-        df = self.df_prepper_cls(
+        df = self.df_handler_cls(
             dataframe=df, original_row_count=len(df.index))
         return df

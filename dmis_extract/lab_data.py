@@ -69,7 +69,7 @@ class LabData:
         }
         self.received = self.db.to_df(sql, columns)
 
-    def fetch_resulted(self, days=None, merge=None):
+    def fetch_resulted(self, days=None, merge=None, df_received=None):
         days = days or self.days
         merge = True if merge is None else merge
         modification_datetime = self.modification_datetime(
@@ -109,19 +109,25 @@ class LabData:
             'receive_modified': 'receive_modified',
         }
         self.resulted = self.db.to_df(sql, columns)
-        self.resulted['report_datetime'] = pd.to_datetime(
-            self.resulted['report_datetime'], infer_datetime_format=True, dayfirst=True)
-        self.resulted['assay_datetime'] = pd.to_datetime(
-            self.resulted['assay_datetime'], infer_datetime_format=True, dayfirst=True)
+        self.resulted.dataframe['report_datetime'] = pd.to_datetime(
+            self.resulted.dataframe['report_datetime'],
+            infer_datetime_format=True, dayfirst=True)
+        self.resulted.dataframe['assay_datetime'] = pd.to_datetime(
+            self.resulted.dataframe['assay_datetime'],
+            infer_datetime_format=True, dayfirst=True)
         if merge:
-            self.fetch_received(
-                days=(date.today() - self.resulted['receive_modified'].min().date()).days)
-            self.resulted = pd.merge(
-                self.resulted, self.received,
+            if days:
+                self.fetch_received(
+                    days=(date.today() - self.resulted.dataframe['receive_modified'].min().date()).days)
+            else:
+                self.fetch_received()
+            merged_dataframe = pd.merge(
+                self.resulted.dataframe, self.received.dataframe,
                 left_on='lis_identifier', right_on='receive_identifier',
                 how='left', suffixes=['', '_recv'])
-            self.resulted.drop(['receive_identifier_recv'],
-                               axis=1, inplace=True)
+            merged_dataframe.drop(['receive_identifier_recv'],
+                                  axis=1, inplace=True)
+            self.resulted.dataframe = merged_dataframe
 
     def fetch_stored(self, days=None, merge=None):
         merge = True if merge is None else merge

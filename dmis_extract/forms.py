@@ -1,7 +1,7 @@
-from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, ButtonHolder, Button
-from django.core.urlresolvers import reverse
+from django import forms
+from django.urls import reverse
 
 
 class LoginForm(forms.Form):
@@ -57,7 +57,8 @@ class BillingReportForm(forms.Form):
         self.helper.form_id = 'id-billing-report-form'
         self.helper.form_class = 'blueForms'
         self.helper.form_method = 'post'
-        self.helper.form_action = reverse('lab_reports_url', kwargs={'report_label': 'billing'})
+        self.helper.form_action = reverse('lab_reports_url', kwargs={
+                                          'report_label': 'billing'})
         self.helper.html5_required = True
         self.helper.layout = Layout(
             *['start_date', 'end_date', 'protocol', 'tid'],
